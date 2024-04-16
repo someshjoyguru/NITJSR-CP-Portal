@@ -60,7 +60,8 @@ const Login = () => {
             borderRadius: '0.25rem',
             backgroundColor: 'rgba(119,97,223,255)',
             width: '70%',
-            margin: 'auto',
+            marginX: 'auto',
+            marginY: '30px',
             padding: '50px',
             ' @media(maxWidth:479px)': { padding: '10px' },
           }}>

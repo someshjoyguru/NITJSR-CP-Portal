@@ -8,7 +8,7 @@ import axios from 'axios';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'index', headerName: 'RANK', width: 70 },
+  { field: 'rank', headerName: 'Rank', width: 70 },
   { field: 'name', headerName: 'Name', width: 130 },
   { field: 'codeforces', headerName: 'Codeforces Id', width: 130 },
   {
@@ -28,7 +28,12 @@ const Leaderboard = () => {
       withCredentials: true,
     })
       .then((res) => {
-        setLeader(res.data.leaderboard);
+        const rankedLeaderboard = res.data.leaderboard.map((item, index) => ({
+          ...item,
+          rank: index + 1,
+        }));
+        setLeader(rankedLeaderboard);
+        
         toast.success("Leaderboard fetched successfully!");
       })
       .catch((e) => {
@@ -52,7 +57,6 @@ const Leaderboard = () => {
         }}
         pageSizeOptions={[5, 10,20,50,100]}
         getRowId={(row) => row._id}
-        checkboxSelection
       />
     </div>
     </>

@@ -63,8 +63,9 @@ const Register = () => {
             borderRadius: '0.25rem',
             backgroundColor: 'rgba(119,97,223,255)',
             width: '70%',
-            margin: 'auto',
-            padding: '50px',
+            marginX: 'auto',
+            marginY: '10px',
+            padding: '30px',
             ' @media(maxWidth:479px)': { padding: '10px' },
           }}>
           <Box
@@ -168,7 +169,7 @@ const Register = () => {
                 <Stack
                   sx={{
                     alignItems: 'center',
-                    paddingY: '30px',
+                    paddingY: '20px',
                     width: '50%',
                     ' @media(max-width:991px)': { width: '80%' },
                     ' @media(maxWidth:479px)': { width: '100%' },
