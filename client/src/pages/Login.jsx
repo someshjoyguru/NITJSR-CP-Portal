@@ -3,7 +3,9 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
 import { Context, server } from "../main";
-import "../styles/Login.css";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+// import "../styles/Login.css";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -68,6 +70,25 @@ const Login = () => {
             </Link>
           </button>
         </form>
+        <Box
+          component="form"
+          sx={{
+            '& > :not(style)': { m: 1, width: '70%' },
+          }}
+          noValidate
+          autoComplete="off"
+          onSubmit={submitHandler}
+        >
+          <TextField id="outlined-basic" label="Email" variant="outlined" />
+          <TextField
+            id="outlined-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+          />
+          {/* <TextField id="filled-basic" label="Filled" variant="filled" /> */}
+          {/* <TextField id="standard-basic" label="Standard" variant="standard" /> */}
+        </Box>
       </section>
     </div>
   );

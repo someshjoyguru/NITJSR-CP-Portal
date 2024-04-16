@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
-import { server } from '../main';
+import { Context, server } from '../main';
 import axios from 'axios';
 
+import { DataGrid } from '@mui/x-data-grid';
+
+const columns = [
+  { field: 'index', headerName: 'RANK', width: 70 },
+  { field: 'name', headerName: 'Name', width: 130 },
+  { field: 'codeforces', headerName: 'Codeforces Id', width: 130 },
+  {
+    field: 'codeforcesRating',
+    headerName: 'Codeforces Rating',
+    width: 70,
+  }
+];
+
 const Leaderboard = () => {
+  const { isAuthenticated } = useContext(Context);
   const [leader, setLeader] = useState([]);
+
+  if (!isAuthenticated) return <Navigate to="/login" />;
   useEffect(() => {
     axios.get(`${server}/leaderboard`, {
       withCredentials: true,
@@ -20,28 +36,25 @@ const Leaderboard = () => {
         toast.error(e.response.data.message);
       });
   }, []);
+
+
   return (
     <>
-      <Link to="/">Home</Link>
-      <div>Leaderboard</div>
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Codeforces Rating</th>
-          </tr>
-        </thead>
-        <tbody>
-          {leader.map((user, index) => (
-            <tr key={user._id}>
-              <td>{index + 1}</td>
-              <td>{user.name}</td>
-              <td>{user.codeforcesRating}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    {console.log(leader)}
+    <div style={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={leader}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10,20,50,100]}
+        getRowId={(row) => row._id}
+        checkboxSelection
+      />
+    </div>
     </>
   )
 

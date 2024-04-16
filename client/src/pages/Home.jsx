@@ -3,10 +3,9 @@ import axios from "axios";
 import { Context, server } from "../main";
 import { toast } from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
-
-
-import "../App.css";
-import "../styles/Home.css";
+import { Box } from "@mui/material";
+// import "../App.css";
+// import "../styles/Home.css";
 
 const Home = () => {
   const [refresh, setRefresh] = useState(false);
@@ -203,7 +202,6 @@ const Home = () => {
             )}
           </div>
           <Link to="/leaderboard">Leaderboard</Link>
-          
         </div>
       </div>
     </>
