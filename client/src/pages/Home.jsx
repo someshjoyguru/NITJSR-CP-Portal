@@ -2,7 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Context, server } from "../main";
 import { toast } from "react-hot-toast";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+
 
 import "../App.css";
 import "../styles/Home.css";
@@ -201,6 +202,8 @@ const Home = () => {
               </>
             )}
           </div>
+          <Link to="/leaderboard">Leaderboard</Link>
+          
         </div>
       </div>
     </>
