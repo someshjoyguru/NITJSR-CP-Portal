@@ -17,6 +17,9 @@ const Header = () => {
   const { isAuthenticated, setIsAuthenticated} =
     useContext(Context);
   
+  const loginHandler = async () => {
+    <Navigate to="/login" />;
+  };
 
   const logoutHandler = async () => {
     
@@ -54,9 +57,8 @@ const Header = () => {
           {isAuthenticated ? (
             <Button color="inherit" onClick={logoutHandler}>Logout</Button>
           ) : (
-            null
+            <Button color="inherit" onClick={loginHandler}>Login</Button>
           )}
-          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
     </Box>
