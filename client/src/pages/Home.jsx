@@ -7,7 +7,6 @@ import { Navigate } from "react-router-dom";
 import "../App.css";
 import "../styles/Home.css";
 
-
 const Home = () => {
   const [refresh, setRefresh] = useState(false);
   const [quotes, setQuotes]=useState([]);
@@ -35,6 +34,7 @@ const Home = () => {
       setEditedRegistrationNo(res.data.user.registrationNo);
         setEditedShirtSize(res.data.user.shirtSize);
         setEditedCodeforces(res.data.user.codeforces);
+        setEditedRating(res.data.user.codeforcesRating);
       })
       .catch((e) => {
         console.error(e);
@@ -70,6 +70,10 @@ const Home = () => {
     setIsEditing(true);
   };
 
+  const handleRating = (editedRating) => {
+    setEditedRating(editedRating);
+  };
+
   const handleDone = async () => {
     let config = {
       method: 'post',
@@ -78,11 +82,15 @@ const Home = () => {
       headers: { }
     };
 
+    let rating = 0;
     await axios.request(config)
     .then((response) => {
       console.log(response.data.result);
-      setEditedRating(JSON.stringify(response.data.result[response.data.result.length-1].newRating));
-      console.log(editedRating);
+      rating = response.data.result[response.data.result.length-1].newRating.toString();
+      console.log(rating);
+
+      handleRating(rating);
+      console.log(rating);
     })
     .catch((error) => {
       console.log(error);
@@ -94,7 +102,7 @@ const Home = () => {
       registrationNo: editedRegistrationNo,
       shirtSize: editedShirtSize,
       codeforces: editedCodeforces,
-      codeforcesRating: editedRating,
+      codeforcesRating: rating,
     };
 
     config = {

@@ -34,8 +34,8 @@ const schema = new mongoose.Schema({
     unique: [true, "Codeforces handle already exists"],
   },
   codeforcesRating: {
-    type: Number,
-    default: 0,
+    type: String,
+    default: "0",
   },
   streak: {
     type: Number,
