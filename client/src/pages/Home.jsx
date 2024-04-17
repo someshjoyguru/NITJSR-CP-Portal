@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Context, server } from "../main";
 import { toast } from "react-hot-toast";
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Box, ButtonGroup, Grid, TextField } from "@mui/material";
 import {
   Typography,
@@ -21,8 +21,6 @@ const Home = () => {
   const [refresh, setRefresh] = useState(false);
   const [quotes, setQuotes] = useState([]);
 
-  const { isAuthenticated } = useContext(Context);
-
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
@@ -32,7 +30,6 @@ const Home = () => {
   const [editedCodeforces, setEditedCodeforces] = useState("");
   const [editedRating, setEditedRating] = useState("0");
 
-  if (!isAuthenticated) return <Navigate to={"/login"} />;
   useEffect(() => {
     axios.get(`${server}/users/me`, {
       withCredentials: true,

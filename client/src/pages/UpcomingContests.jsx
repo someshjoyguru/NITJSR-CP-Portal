@@ -1,13 +1,11 @@
 import { Box, Button, Typography } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios'; 
 import { Context, server } from '../main';
 
 const UpcomingContests = () => {
-    const { isAuthenticated } = useContext(Context);
     const [upcomingContests, setUpcomingContests] = useState([]);
 
-    if (!isAuthenticated) return <Navigate to="/login" />;
     useEffect(() => {
         const fetchData = async () => {
             try {

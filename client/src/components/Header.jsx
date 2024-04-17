@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Context, server } from "../main";
 // import "../styles/Header.css";
 
@@ -17,9 +17,6 @@ const Header = () => {
   const { isAuthenticated, setIsAuthenticated} =
     useContext(Context);
   const navigate = useNavigate();
-  const loginHandler = async () => {
-    <Navigate to="/login" />;
-  };
 
   const logoutHandler = async () => {
     
@@ -30,6 +27,7 @@ const Header = () => {
 
       toast.success("Logged Out Successfully");
       setIsAuthenticated(false);
+      navigate('/login');
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(true);
@@ -60,7 +58,9 @@ const Header = () => {
           {isAuthenticated ? (
             <Button color="inherit" onClick={logoutHandler}>Logout</Button>
           ) : (
-            <Button color="inherit" onClick={loginHandler}>Login</Button>
+            <Button color="inherit" onClick={()=>{
+              navigate('/login');
+            }}>Login</Button>
           )}
         </Toolbar>
       </AppBar>

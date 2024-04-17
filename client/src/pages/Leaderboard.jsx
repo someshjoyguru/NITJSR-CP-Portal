@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import toast from 'react-hot-toast';
-import { Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { Context, server } from '../main';
 import axios from 'axios';
@@ -19,10 +18,8 @@ const columns = [
 ];
 
 const Leaderboard = () => {
-  const { isAuthenticated } = useContext(Context);
   const [leader, setLeader] = useState([]);
 
-  if (!isAuthenticated) return <Navigate to="/login" />;
   useEffect(() => {
     axios.get(`${server}/leaderboard`, {
       withCredentials: true,
