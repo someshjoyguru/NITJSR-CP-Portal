@@ -262,16 +262,6 @@ const Home = () => {
                     <Button variant="contained" onClick={handleEdit}>Edit</Button>
 
                   </Box>
-                  {/* <div className="">Name: {editedName}</div>
-                <div className="">Email: {editedEmail}</div>
-                <div className="">Phone: {editedPhone}</div>
-                <div className="">Registration No.: {editedRegistrationNo}</div>
-                <div className="">Shirt Size: {editedShirtSize}</div>
-                <div className="">Codeforces Id: {editedCodeforces}</div>
-                <div className="">Codeforces Rating: {editedRating}</div> */}
-                  {/* <button onClick={handleEdit}>Edit</button> */}
-
-
                 </Box>
               </>
             )}
@@ -291,7 +281,7 @@ const Home = () => {
 
 
             <Link to="/leaderboard"><Button variant="contained">LeaderBoard</Button></Link>
-            <Button variant="contained">Upcoming Contests</Button>
+            <Link to="/upcomingcontests"><Button variant="contained">Upcoming Contests</Button></Link>
 
           </Box>
 

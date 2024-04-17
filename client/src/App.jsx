@@ -8,6 +8,7 @@ import { useContext, useEffect } from "react";
 import axios from "axios";
 import { Context, server } from "./main";
 import Header from "./components/Header";
+import UpcomingContests from "./pages/UpcomingContests";
 
 function App() {
   const { setUser, setIsAuthenticated} = useContext(Context);
@@ -35,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/upcomingcontests" element={<UpcomingContests />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
