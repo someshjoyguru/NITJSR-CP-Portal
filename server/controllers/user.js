@@ -26,19 +26,34 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    let user = await User.findOne({ email });
+    // Validate input fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email, and password are required." });
+    }
 
-    if (user) return new ErrorHandler("User Already Exist", 400);
+    console.log(name, email, password);
+    // Check if user already exists
+    const existingUserByEmail = await User.findOne({ email });
+    const existingUserByName = await User.findOne({ name });
+    if (existingUserByEmail || existingUserByName) {
+      return res.status(400).json({ message: "User already exists." });
+    }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    user = await User.create({ name, email, password: hashedPassword });
+    // Create new user
+    const newUser = await User.create({ name, email, password: hashedPassword });
 
-    sendCookie(user, res, "Registered Successfully", 201);
+    // Send success response
+    sendCookie(newUser, res, "Registered successfully.", 201);
   } catch (error) {
-    console.log(error);
+    // Handle errors
+    console.error("Registration error:", error);
+    return res.status(500).json({ message: "Internal server error." });
   }
 };
+
 
 export const getMyProfile = (req, res) => {
   res.status(200).json({

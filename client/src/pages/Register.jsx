@@ -28,7 +28,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const { name, email, password } = formData;
-      const { data } = await axios.post(
+      const data = await axios.post(
         `${server}/users/new`,
         {
           name,
@@ -44,8 +44,8 @@ const Register = () => {
       );
 
       
+      toast.success("Registered Successfully");
 
-      toast.success(data.message);
       setIsAuthenticated(true);
     } catch (error) {
       toast.error(error.response.data.message);
