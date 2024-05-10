@@ -5,7 +5,7 @@ import { createContext } from "react";
 import "./App.css";
 
 // export const server = "https://achieveit-backend.onrender.com/api/v1";
-export const server = "https://nitjsr-cp-portal-backend.vercel.app/api/v1";
+export const server = "https://backend-cp.onrender.com/api/v1";
 
 export const Context = createContext({ isAuthenticated: false });
 
