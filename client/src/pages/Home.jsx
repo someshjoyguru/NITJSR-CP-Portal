@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Context, server } from "../main";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { Box, ButtonGroup, Grid, TextField } from "@mui/material";
 import {
   Typography,
@@ -17,7 +17,17 @@ import {
 // import "../App.css";
 // import "../styles/Home.css";
 
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useContext(Context);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
+
+
 const Home = () => {
+
   const [refresh, setRefresh] = useState(false);
   const [quotes, setQuotes] = useState([]);
 
@@ -29,6 +39,8 @@ const Home = () => {
   const [editedShirtSize, setEditedShirtSize] = useState("");
   const [editedCodeforces, setEditedCodeforces] = useState("");
   const [editedRating, setEditedRating] = useState("0");
+
+
 
   useEffect(() => {
     axios.get(`${server}/users/me`, {
@@ -135,157 +147,159 @@ const Home = () => {
   };
 
   return (
-    <>
-      <Box>
-        <Box sx={{
-          marginX: '50px',
-          marginY: '10px'
-        }}>
+    <ProtectedRoute>
+      <>
+        <Box>
           <Box sx={{
-            backgroundColor: '#f5f5f5',
-            padding: '10px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            marginX: '50px',
+            marginY: '10px'
           }}>
-          <Typography variant="h5" >Hello, {editedName}</Typography>
-          <Typography variant="h3">Let's Crack It</Typography>
-          
-          <Quote text={quotes[0]} author={quotes[1]} />
-          </Box>
-          <div className="profile">
-            {isEditing ? (
-              <>
-                <Box sx={{
-                  gap: '8px',
-                  flexGrow: 1,
-                  padding: '30px',
-                  width: '70%',
-                  margin: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
-                  <TextField name="name" label="Name" value={editedName} onChange={(e) => setEditedName(e.target.value)} disabled sx={{
-                    color: '#73808c',
-                    borderRadius: '10px',
-                    fontWeight: '500',
-                    fontSize: '15px',
-                    padding: '10px',
-                    width: '100%',
-                    outline: 'none',
-                  }} />
-                  <TextField name="email" label="Email" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} disabled sx={{
-                    color: '#73808c',
-                    borderRadius: '10px',
-                    fontWeight: '500',
-                    fontSize: '15px',
-                    padding: '10px',
-                    width: '100%',
-                    outline: 'none',
-                  }} />
-                  <TextField name="phone" label="Phone No." value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} sx={{
-                    color: '#73808c',
-                    borderRadius: '10px',
-                    fontWeight: '500',
-                    fontSize: '15px',
-                    padding: '10px',
-                    width: '100%',
-                    outline: 'none',
-                  }} />
-                  <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} sx={{
-                    color: '#73808c',
-                    borderRadius: '10px',
-                    fontWeight: '500',
-                    fontSize: '15px',
-                    padding: '10px',
-                    width: '100%',
-                    outline: 'none',
-                  }} />
-                  <TextField name="size" label="Shirt Size:" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} sx={{
-                    color: '#73808c',
-                    borderRadius: '10px',
-                    fontWeight: '500',
-                    fontSize: '15px',
-                    padding: '10px',
-                    width: '100%',
-                    outline: 'none',
-                  }} />
-                  <TextField name="codeforces" label="Codeforces Id:" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} sx={{
-                    color: '#73808c',
-                    borderRadius: '10px',
-                    fontWeight: '500',
-                    fontSize: '15px',
-                    padding: '10px',
-                    width: '100%',
-                    outline: 'none',
-                  }} />
-                  <Button variant="contained" onClick={handleDone}>Done</Button>
-                </Box>
-              </>
-            ) : (
-              <>
-                <Box sx={{
-                  gap: '8px',
-                  flexGrow: 1,
-                  padding: '30px',
-                  width: '50%',
-                  margin: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}>
-                  <Typography variant="h5" sx={{
-                    alignSelf: 'center',
-                    color: '#73808c',
-                    fontWeight: '600',
-                  }}>DASHBOARD</Typography>
-                  <Typography variant="h6">Name: {editedName}</Typography>
-                  <Typography variant="h6">Email: {editedEmail}</Typography>
-                  <Typography variant="h6">Phone: {editedPhone}</Typography>
-                  <Typography variant="h6">Registration No.: {editedRegistrationNo}</Typography>
-                  <Typography variant="h6">Shirt Size: {editedShirtSize}</Typography>
-                  <Typography variant="h6">Codeforces Id: {editedCodeforces}</Typography>
-                  <Typography variant="h6">Codeforces Rating: {editedRating}</Typography>
+            <Box sx={{
+              backgroundColor: '#f5f5f5',
+              padding: '10px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}>
+              <Typography variant="h5" >Hello, {editedName}</Typography>
+              <Typography variant="h3">Let's Crack It</Typography>
+
+              <Quote text={quotes[0]} author={quotes[1]} />
+            </Box>
+            <div className="profile">
+              {isEditing ? (
+                <>
                   <Box sx={{
                     gap: '8px',
                     flexGrow: 1,
-                    padding: '10px',
+                    padding: '30px',
                     width: '70%',
                     margin: 'auto',
                     display: 'flex',
+                    flexDirection: 'column',
                     justifyContent: 'center',
                   }}>
-                    <Button variant="contained" onClick={handleEdit}>Edit</Button>
-
+                    <TextField name="name" label="Name" value={editedName} onChange={(e) => setEditedName(e.target.value)} disabled sx={{
+                      color: '#73808c',
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      fontSize: '15px',
+                      padding: '10px',
+                      width: '100%',
+                      outline: 'none',
+                    }} />
+                    <TextField name="email" label="Email" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} disabled sx={{
+                      color: '#73808c',
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      fontSize: '15px',
+                      padding: '10px',
+                      width: '100%',
+                      outline: 'none',
+                    }} />
+                    <TextField name="phone" label="Phone No." value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} sx={{
+                      color: '#73808c',
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      fontSize: '15px',
+                      padding: '10px',
+                      width: '100%',
+                      outline: 'none',
+                    }} />
+                    <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} sx={{
+                      color: '#73808c',
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      fontSize: '15px',
+                      padding: '10px',
+                      width: '100%',
+                      outline: 'none',
+                    }} />
+                    <TextField name="size" label="Shirt Size:" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} sx={{
+                      color: '#73808c',
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      fontSize: '15px',
+                      padding: '10px',
+                      width: '100%',
+                      outline: 'none',
+                    }} />
+                    <TextField name="codeforces" label="Codeforces Id:" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} sx={{
+                      color: '#73808c',
+                      borderRadius: '10px',
+                      fontWeight: '500',
+                      fontSize: '15px',
+                      padding: '10px',
+                      width: '100%',
+                      outline: 'none',
+                    }} />
+                    <Button variant="contained" onClick={handleDone}>Done</Button>
                   </Box>
-                </Box>
-              </>
-            )}
-          </div>
+                </>
+              ) : (
+                <>
+                  <Box sx={{
+                    gap: '8px',
+                    flexGrow: 1,
+                    padding: '30px',
+                    width: '50%',
+                    margin: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}>
+                    <Typography variant="h5" sx={{
+                      alignSelf: 'center',
+                      color: '#73808c',
+                      fontWeight: '600',
+                    }}>DASHBOARD</Typography>
+                    <Typography variant="h6">Name: {editedName}</Typography>
+                    <Typography variant="h6">Email: {editedEmail}</Typography>
+                    <Typography variant="h6">Phone: {editedPhone}</Typography>
+                    <Typography variant="h6">Registration No.: {editedRegistrationNo}</Typography>
+                    <Typography variant="h6">Shirt Size: {editedShirtSize}</Typography>
+                    <Typography variant="h6">Codeforces Id: {editedCodeforces}</Typography>
+                    <Typography variant="h6">Codeforces Rating: {editedRating}</Typography>
+                    <Box sx={{
+                      gap: '8px',
+                      flexGrow: 1,
+                      padding: '10px',
+                      width: '70%',
+                      margin: 'auto',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                      <Button variant="contained" onClick={handleEdit}>Edit</Button>
+
+                    </Box>
+                  </Box>
+                </>
+              )}
+            </div>
 
 
 
-          <Box sx={{
-            gap: '8px',
-            flexGrow: 1,
-            padding: '10px',
-            width: '70%',
-            margin: 'auto',
-            display: 'flex',
-            justifyContent: 'center',
-          }}>
+            <Box sx={{
+              gap: '8px',
+              flexGrow: 1,
+              padding: '10px',
+              width: '70%',
+              margin: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+            }}>
 
 
-            <Link to="/leaderboard"><Button variant="contained">LeaderBoard</Button></Link>
-            <Link to="/upcomingcontests"><Button variant="contained">Upcoming Contests</Button></Link>
+              <Link to="/leaderboard"><Button variant="contained">LeaderBoard</Button></Link>
+              <Link to="/upcomingcontests"><Button variant="contained">Upcoming Contests</Button></Link>
+
+            </Box>
 
           </Box>
-
         </Box>
-      </Box>
 
-    </>
+      </>
+    </ProtectedRoute>
   );
 };
 
