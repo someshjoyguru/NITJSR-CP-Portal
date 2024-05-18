@@ -14,8 +14,6 @@ import {
   Select,
   Card,
 } from '@mui/material';
-// import "../App.css";
-// import "../styles/Home.css";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(Context);

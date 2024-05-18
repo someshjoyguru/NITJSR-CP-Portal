@@ -3,9 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { Context, server } from "../main";
 import toast from "react-hot-toast";
-// import "../styles/Register.css";
 import Box from '@mui/material/Box';
-// import "../styles/Login.css";
 import { Button, Stack, Typography, Input, TextField, FormGroup } from '@mui/material';
 
 const Register = () => {

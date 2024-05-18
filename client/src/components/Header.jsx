@@ -3,7 +3,6 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Context, server } from "../main";
-// import "../styles/Header.css";
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
