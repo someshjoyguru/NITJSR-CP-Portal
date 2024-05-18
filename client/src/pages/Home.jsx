@@ -290,6 +290,9 @@ const Home = () => {
 
               <Link to="/leaderboard"><Button variant="contained">LeaderBoard</Button></Link>
               <Link to="/upcomingcontests"><Button variant="contained">Upcoming Contests</Button></Link>
+              <Link to="/community"><Button variant="contained">Community</Button></Link>
+              <Link to="/codingstats"><Button variant="contained">Coding Stats</Button></Link>
+              
 
             </Box>
 

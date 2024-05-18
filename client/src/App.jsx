@@ -10,6 +10,9 @@ import { Context, server } from "./main";
 import Header from "./components/Header";
 import UpcomingContests from "./pages/UpcomingContests";
 
+import Community from "./pages/Community";
+import CodingStats from "./pages/CodingStats";
+
 function App() {
   const { setUser, setIsAuthenticated} = useContext(Context);
 
@@ -39,6 +42,8 @@ function App() {
         <Route path="/upcomingcontests" element={<UpcomingContests />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/community" element={<Community />} />
+        <Route path="/codingstats" element={<CodingStats />} />
       </Routes>
       <Toaster />
     </Router>
