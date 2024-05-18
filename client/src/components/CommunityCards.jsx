@@ -64,7 +64,7 @@ export function OneCard({resetViewPost, ...posts}) {
   const { name, email } = userProfile.user;
 
   return (
-    <Box sx={{ width: '100%', maxWidth: 800, margin: 'auto', p: 2 }}>
+    <Box>
       <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
         <IconButton onClick={resetViewPost}>
           <HomeIcon fontSize="large" color="secondary" />

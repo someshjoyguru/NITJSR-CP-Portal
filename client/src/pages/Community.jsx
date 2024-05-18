@@ -72,7 +72,7 @@ const Community = () => {
         {
           heading,
           description,
-          user: user._id,
+          user: user?._id,
         },
         {
           withCredentials: true,
@@ -116,14 +116,14 @@ const Community = () => {
               gap: "8px",
               flexGrow: 1,
               padding: "30px",
-              width: "90%",
+              width: "70%",
               margin: "auto",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
             }}
           >
-            <Button variant="contained" onClick={() => setOpen(true)}>
+            <Button variant="contained" sx={{marginBottom:"20px"}} onClick={() => setOpen(true)}>
               Create NEW Post
             </Button>
             {open && (
@@ -185,7 +185,6 @@ const Community = () => {
             <Box
               sx={{
                 flexGrow: 1,
-                marginX: "10%",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
@@ -195,7 +194,7 @@ const Community = () => {
               <Grid container spacing={4}>
                 {!viewPost &&
                   posts.map((post) => (
-                    <Grid item xs={12} sm={6} md={4} key={post._id}>
+                    <Grid item xs={12} sm={12} md={12} key={post._id}>
                       <Card>
                         <CardContent>
                           <Typography variant="h5" gutterBottom>

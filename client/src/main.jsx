@@ -4,8 +4,8 @@ import App from "./App";
 import { createContext } from "react";
 import "./App.css";
 
-// export const server = "https://achieveit-backend.onrender.com/api/v1";
-export const server = "http://localhost:4000/api/v1";
+// export const server = "http://localhost:4000/api/v1";
+export const server = "https://backend-cp.onrender.com/api/v1"
 
 export const Context = createContext({ isAuthenticated: false });
 
