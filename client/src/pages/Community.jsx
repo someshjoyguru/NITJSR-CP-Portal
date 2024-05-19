@@ -67,20 +67,35 @@ const Community = () => {
     }
 
     try {
+      const resai = await axios.post(
+        `https://ai-summarizer-qpq0.onrender.com/evaluate`,
+        {
+          text: description,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(resai.data);
+      toast.success("Summary generated using AI successfully!");
       const res = await axios.post(
         `${server}/posts`,
         {
           heading,
           description,
           user: user?._id,
+          summary: resai.data.summary,
         },
         {
           withCredentials: true,
         }
       );
       toast.success("Post created successfully!");
+      
       setOpen(false);
-      setPosts([...posts, res.data.post]); // Add the new post to the list
+      setPosts
+      setPosts([...posts, res.data.post]);
+      
     } catch (e) {
       console.error(e);
       toast.error(e.response?.data?.message || "Error creating post");
