@@ -75,7 +75,7 @@ export function OneCard({resetViewPost, ...posts}) {
       </Box>
 
       <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h3" gutterBottom>
+        <Typography variant="h4" gutterBottom>
           {heading}
         </Typography>
 

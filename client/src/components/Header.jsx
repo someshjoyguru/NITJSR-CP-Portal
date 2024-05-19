@@ -11,14 +11,16 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useTheme } from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
-  const { isAuthenticated, setIsAuthenticated} =
-    useContext(Context);
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const logoutHandler = async () => {
-    
     try {
       await axios.get(`${server}/users/logout`, {
         withCredentials: true,
@@ -30,10 +32,8 @@ const Header = () => {
     } catch (error) {
       toast.error(error.response.data.message);
       setIsAuthenticated(true);
-      
     }
   };
-  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -49,7 +49,7 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          NITJSR CP Portal
+            NITJSR CP {isMobile ? '' : "Portal"}
           </Typography>
           <Button color="inherit" onClick={() => navigate('/')}>
             Dashboard
@@ -57,7 +57,7 @@ const Header = () => {
           {isAuthenticated ? (
             <Button color="inherit" onClick={logoutHandler}>Logout</Button>
           ) : (
-            <Button color="inherit" onClick={()=>{
+            <Button color="inherit" onClick={() => {
               navigate('/login');
             }}>Login</Button>
           )}
