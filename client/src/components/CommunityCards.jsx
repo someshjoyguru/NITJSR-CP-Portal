@@ -53,7 +53,7 @@ export function Postcard({ _id, heading, description, user, handleViewPost }) {
 
 export function OneCard({resetViewPost, ...posts}) {
   const { user, heading, description, views, createdAt, comments, likes, status, tags, updatedAt  } = posts;
-  const avatarUrl = 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20211116182112/How-To-Make-Competitive-Programming-Interesting.png';
+  const avatarUrl = 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png';
   const userProfile = useUserProfile(user);
 
   if (!userProfile) {

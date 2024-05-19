@@ -26,6 +26,7 @@ import { Postcard, OneCard } from "../components/CommunityCards";
 import { Navigate } from "react-router-dom";
 import { Context, server } from "../main";
 import { rulesText } from "../utils/processText";
+import Loader from "../utils/Loader";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(Context);
@@ -42,9 +43,11 @@ const Community = () => {
   const [heading, setHeading] = useState("");
   const [description, setDescription] = useState("");
   const [viewPost, setViewPost] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const res = await axios.get(`${server}/posts`, {
           withCredentials: true,
@@ -54,6 +57,8 @@ const Community = () => {
       } catch (error) {
         console.error(error);
         toast.error(error.response?.data?.message || "Error fetching posts");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -66,6 +71,7 @@ const Community = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const resai = await axios.post(
         `https://ai-summarizer-qpq0.onrender.com/evaluate`,
@@ -99,6 +105,8 @@ const Community = () => {
     } catch (e) {
       console.error(e);
       toast.error(e.response?.data?.message || "Error creating post");
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -124,6 +132,9 @@ const Community = () => {
 
   return (
     <ProtectedRoute>
+      {loading ? (
+        <Loader />
+      ) : (
       <Box>
         <Box>
           <Box
@@ -243,6 +254,7 @@ const Community = () => {
           </Box>
         </Box>
       </Box>
+      )}
     </ProtectedRoute>
   );
 };
