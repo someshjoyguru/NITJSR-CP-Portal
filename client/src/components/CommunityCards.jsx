@@ -60,7 +60,7 @@ export function OneCard({resetViewPost, ...posts}) {
     return <div>Loading...</div>;
   }
 
-  console.log(userProfile);
+  // console.log(userProfile);
   const { name, email } = userProfile.user;
 
   return (

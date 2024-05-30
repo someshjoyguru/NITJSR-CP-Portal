@@ -43,7 +43,7 @@ const Leaderboard = () => {
 
   return (
     <>
-      {console.log(leader)}
+      {/* {console.log(leader)} */}
       <Box>
         <Box sx={{
           marginX: '50px',

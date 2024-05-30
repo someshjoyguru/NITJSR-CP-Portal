@@ -86,12 +86,12 @@ const Home = () => {
     let rating = 0;
     await axios.request(config)
       .then((response) => {
-        console.log(response.data.result);
+        // console.log(response.data.result);
         rating = response.data.result[response.data.result.length - 1].newRating.toString();
-        console.log(rating);
+        // console.log(rating);
 
         handleRating(rating);
-        console.log(rating);
+        // console.log(rating);
       })
       .catch((error) => {
         console.log(error);
@@ -119,7 +119,7 @@ const Home = () => {
 
     await axios.request(config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setIsEditing(false);
         toast.success("Profile updated successfully");
       })

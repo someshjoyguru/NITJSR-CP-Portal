@@ -82,7 +82,7 @@ const Community = () => {
           withCredentials: true,
         }
       );
-      console.log(resai.data);
+      // console.log(resai.data);
       toast.success("Summary generated using AI successfully!");
       const res = await axios.post(
         `${server}/posts`,

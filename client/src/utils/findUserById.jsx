@@ -7,7 +7,7 @@ const findUserById = async (id) => {
         const userById = await axios.get(`${server}/users/${id}`, {
             withCredentials: true,
         });
-        console.log(userById);
+        // console.log(userById);
         return userById;
     } catch (error) {
         toast.error(error.response.data.message);
