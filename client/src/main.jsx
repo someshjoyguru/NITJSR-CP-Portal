@@ -3,8 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { createContext } from "react";
 import "./App.css";
-import { Router } from "react-router-dom";
-import history from "./utils/history";
 
 // export const server = "http://localhost:4000/api/v1";
 export const server = "https://backend-cp.onrender.com/api/v1"
@@ -31,8 +29,6 @@ const AppWrapper = () => {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Router history={history}>
-      <AppWrapper />
-    </Router>
+    <AppWrapper />
   </React.StrictMode>
 );
