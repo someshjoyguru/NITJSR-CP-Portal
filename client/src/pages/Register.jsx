@@ -64,7 +64,11 @@ const Register = () => {
             marginX: 'auto',
             marginY: '10px',
             padding: '30px',
-            ' @media(maxWidth:479px)': { padding: '10px' },
+            ' @media(max-width:479px)': {
+              padding: '0px',
+              backgroundColor: 'rgb(255,255,255)',
+              width:'90%'
+            }
           }}>
           <Box
             sx={{
@@ -87,7 +91,12 @@ const Register = () => {
                 gap: '40px',
                 width: '60%',
                 ' @media(max-width:991px)': { width: '100%' },
-                ' @media(maxWidth:479px)': { width: '100%' },
+                ' @media(max-width:479px)': {
+                  width: '100%',
+                  padding: '10px',
+                  gap: '5px',
+                  width:'90%'
+                },
               }}>
               <Stack
                 sx={{

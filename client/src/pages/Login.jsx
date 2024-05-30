@@ -62,7 +62,11 @@ const Login = () => {
             marginX: 'auto',
             marginY: '30px',
             padding: '50px',
-            ' @media(maxWidth:479px)': { padding: '10px' },
+            ' @media(max-width:479px)': {
+              padding: '0px',
+              backgroundColor: 'rgb(255,255,255)',
+              width:'90%'
+            },
           }}>
           <Box
             sx={{
@@ -72,9 +76,7 @@ const Login = () => {
               borderRadius: '10px',
               display: 'flex',
               width: '100%',
-              maxWidth: '1200px',
               margin: 'auto',
-              overflow: 'hidden',
             }}>
             <Box
               sx={{
@@ -85,7 +87,12 @@ const Login = () => {
                 gap: '40px',
                 width: '60%',
                 ' @media(max-width:991px)': { width: '100%' },
-                ' @media(maxWidth:479px)': { width: '100%' },
+                ' @media(max-width:479px)': {
+                  width: '100%',
+                  padding: '10px',
+                  gap: '5px',
+                  width:'90%'
+                },
               }}>
               <Stack
                 sx={{
