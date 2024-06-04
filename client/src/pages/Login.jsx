@@ -241,7 +241,7 @@ const Login = () => {
             </Box>
             <Box
               sx={{
-                backgroundImage:'../assets/national-institute-of-technology-jamshedpur-242023.jpg',
+                backgroundImage:`url('../assets/national-institute-of-technology-jamshedpur-242023.jpg')`,
                 width: '40%',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
