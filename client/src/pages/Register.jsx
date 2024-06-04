@@ -255,8 +255,7 @@ const Register = () => {
             </Box>
             <Box
               sx={{
-                backgroundImage:
-                  'url(https://www.collegebatch.com/static/clg-gallery/national-institute-of-technology-jamshedpur-242023.jpg)',
+                backgroundImage:'../assets/national-institute-of-technology-jamshedpur-242023.jpg',
                 width: '40%',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
