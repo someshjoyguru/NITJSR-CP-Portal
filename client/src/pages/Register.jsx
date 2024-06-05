@@ -5,6 +5,7 @@ import { Context, server } from "../main";
 import toast from "react-hot-toast";
 import Box from '@mui/material/Box';
 import { Button, Stack, Typography, Input, TextField, FormGroup } from '@mui/material';
+import bgImg from '../assets/national-institute-of-technology-jamshedpur-242023.jpg';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -255,7 +256,7 @@ const Register = () => {
             </Box>
             <Box
               sx={{
-                backgroundImage:"url('../assets/national-institute-of-technology-jamshedpur-242023.jpg')",
+                backgroundImage:`url(${bgImg})`,
                 width: '40%',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',

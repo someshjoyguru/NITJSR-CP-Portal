@@ -5,6 +5,7 @@ import { Link, Navigate } from "react-router-dom";
 import { Context, server } from "../main";
 import Box from '@mui/material/Box';
 import { Button, Stack, Typography, Input, TextField, FormGroup } from '@mui/material';
+import bgImg from '../assets/national-institute-of-technology-jamshedpur-242023.jpg';
 
 
 const Login = () => {
@@ -241,7 +242,7 @@ const Login = () => {
             </Box>
             <Box
               sx={{
-                backgroundImage:"url('../assets/national-institute-of-technology-jamshedpur-242023.jpg')",
+                backgroundImage:`url(${bgImg})`,
                 width: '40%',
                 backgroundRepeat: 'no-repeat',
                 backgroundSize: 'cover',
