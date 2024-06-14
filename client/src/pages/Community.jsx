@@ -76,7 +76,7 @@ const Community = () => {
       const resai = await axios.post(
         `https://ai-summarizer-qpq0.onrender.com/evaluate`,
         {
-          text: description,
+          text: `Summarize the following text in 3 sentences:\n\n${description}`,
         },
         {
           withCredentials: true,
