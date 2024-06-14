@@ -74,7 +74,7 @@ const Community = () => {
     setLoading(true);
     try {
       const resai = await axios.post(
-        `https://ai-summarizer-qpq0.onrender.com/evaluate`,
+        `https://ai-summarizer-eta-ashy.vercel.app/evaluate`,
         {
           text: `Summarize the following text in 3 sentences:\n\n${description}`,
         },
