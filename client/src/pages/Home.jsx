@@ -3,7 +3,8 @@ import axios from "axios";
 import { Context, server } from "../main";
 import { toast } from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
-import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid } from "@mui/material";
+import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid, Paper } from "@mui/material";
+import { styled } from "@mui/system";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(Context);
@@ -51,7 +52,7 @@ const Home = () => {
         const data = response.data;
         const index = Math.floor(Math.random() * data.length);
         let author = data[index].author;
-        author = author.includes(', ') ? author.split(', ')[0] : author;
+        author = author ? author.split(", ")[0] : "Unknown";
         setQuotes([data[index].text, author]);
       })
       .catch(error => console.error("Error fetching quotes:", error));
@@ -59,11 +60,13 @@ const Home = () => {
 
   const Quote = ({ text, author }) => {
     return (
-      <div className="quote">
+      <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', backgroundColor: '#f0f0f0' }}>
         <blockquote>
-          <p>{text} - {author}</p>
+          <Typography variant="h6" sx={{ fontStyle: 'italic' }}>
+            {text} - {author}
+          </Typography>
         </blockquote>
-      </div>
+      </Paper>
     );
   };
 
@@ -86,12 +89,8 @@ const Home = () => {
     let rating = 0;
     await axios.request(config)
       .then((response) => {
-        // console.log(response.data.result);
         rating = response.data.result[response.data.result.length - 1].newRating.toString();
-        // console.log(rating);
-
         handleRating(rating);
-        // console.log(rating);
       })
       .catch((error) => {
         console.log(error);
@@ -119,7 +118,6 @@ const Home = () => {
 
     await axios.request(config)
       .then((response) => {
-        // console.log(response.data);
         setIsEditing(false);
         toast.success("Profile updated successfully");
       })
@@ -129,104 +127,55 @@ const Home = () => {
       });
   };
 
+  const StyledBox = styled(Box)(({ theme }) => ({
+    marginX: isMobile ? '20px' : '50px',
+    marginY: '10px',
+  }));
+
+  const ProfileBox = styled(Box)(({ theme }) => ({
+    gap: '8px',
+    flexGrow: 1,
+    padding: '30px',
+    width: isMobile ? '90%' : '50%',
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  }));
+
   return (
     <ProtectedRoute>
-      <Box sx={{ marginX: isMobile ? '20px' : '50px', marginY: '10px' }}>
+      <StyledBox>
         <Box sx={{
-          backgroundColor: '#f5f5f5',
-          padding: '10px',
+          backgroundColor: '#3f51b5',
+          padding: '20px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          color: '#fff',
         }}>
           <Typography variant="h5">Hello, {editedName}</Typography>
-          {/* <Typography variant="h3">Let's Crack It</Typography> */}
           <Quote text={quotes[0]} author={quotes[1]} />
         </Box>
         <div className="profile">
           {isEditing ? (
-            <Box sx={{
-              gap: '8px',
-              flexGrow: 1,
-              padding: '30px',
-              width: isMobile ? '90%' : '70%',
-              margin: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }}>
-              <TextField name="name" label="Name" value={editedName} onChange={(e) => setEditedName(e.target.value)} disabled sx={{
-                color: '#73808c',
-                borderRadius: '10px',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '10px',
-                width: '100%',
-                outline: 'none',
-              }} />
-              <TextField name="email" label="Email" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} disabled sx={{
-                color: '#73808c',
-                borderRadius: '10px',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '10px',
-                width: '100%',
-                outline: 'none',
-              }} />
-              <TextField name="phone" label="Phone No." value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} sx={{
-                color: '#73808c',
-                borderRadius: '10px',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '10px',
-                width: '100%',
-                outline: 'none',
-              }} />
-              <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} sx={{
-                color: '#73808c',
-                borderRadius: '10px',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '10px',
-                width: '100%',
-                outline: 'none',
-              }} />
-              <TextField name="size" label="Shirt Size:" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} sx={{
-                color: '#73808c',
-                borderRadius: '10px',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '10px',
-                width: '100%',
-                outline: 'none',
-              }} />
-              <TextField name="codeforces" label="Codeforces Id:" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} sx={{
-                color: '#73808c',
-                borderRadius: '10px',
-                fontWeight: '500',
-                fontSize: '15px',
-                padding: '10px',
-                width: '100%',
-                outline: 'none',
-              }} />
-              <Button variant="contained" onClick={handleDone}>Done</Button>
-            </Box>
+            <ProfileBox>
+              <TextField name="name" label="Name" value={editedName} onChange={(e) => setEditedName(e.target.value)} disabled fullWidth />
+              <TextField name="email" label="Email" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} disabled fullWidth />
+              <TextField name="phone" label="Phone No." value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} fullWidth />
+              <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} fullWidth />
+              <TextField name="size" label="Shirt Size" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} fullWidth />
+              <TextField name="codeforces" label="Codeforces Id" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} fullWidth />
+              <Button variant="contained" onClick={handleDone} sx={{ marginTop: '20px' }}>Done</Button>
+            </ProfileBox>
           ) : (
-            <Box sx={{
-              gap: '8px',
-              flexGrow: 1,
-              padding: '30px',
-              width: isMobile ? '90%' : '50%',
-              margin: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }}>
-              <Typography variant="h5" sx={{
-                alignSelf: 'center',
-                color: '#73808c',
-                fontWeight: '600',
-              }}>DASHBOARD</Typography>
+            <ProfileBox>
+              <Typography variant="h5" sx={{ alignSelf: 'center', color: '#3f51b5', fontWeight: '600' }}>DASHBOARD</Typography>
               <Typography variant="h6">Name: {editedName}</Typography>
               <Typography variant="h6">Email: {editedEmail}</Typography>
               <Typography variant="h6">Phone: {editedPhone}</Typography>
@@ -235,44 +184,40 @@ const Home = () => {
               <Typography variant="h6">Codeforces Id: {editedCodeforces}</Typography>
               <Typography variant="h6">Codeforces Rating: {editedRating}</Typography>
               <Box sx={{
-                gap: '8px',
-                flexGrow: 1,
-                padding: '10px',
-                width: '70%',
-                margin: 'auto',
                 display: 'flex',
                 justifyContent: 'center',
+                marginTop: '20px',
               }}>
                 <Button variant="contained" onClick={handleEdit}>Edit</Button>
               </Box>
-            </Box>
+            </ProfileBox>
           )}
         </div>
-        <Box sx={{ display: 'flex', marginX:"10px", justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-        <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <Link to="/leaderboard">
-              <Button variant="contained" fullWidth>LeaderBoard</Button>
-            </Link>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', marginTop: '30px' }}>
+          <Grid container spacing={2} sx={{ width: isMobile ? '90%' : '50%' }}>
+            <Grid item xs={12} sm={6} md={3}>
+              <Link to="/leaderboard" style={{ textDecoration: 'none' }}>
+                <Button variant="contained" fullWidth>LeaderBoard</Button>
+              </Link>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Link to="/upcomingcontests" style={{ textDecoration: 'none' }}>
+                <Button variant="contained" fullWidth>Contests</Button>
+              </Link>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Link to="/community" style={{ textDecoration: 'none' }}>
+                <Button variant="contained" fullWidth>Community</Button>
+              </Link>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Link to="/codingstats" style={{ textDecoration: 'none' }}>
+                <Button variant="contained" fullWidth>Coding Stats</Button>
+              </Link>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Link to="/upcomingcontests">
-              <Button variant="contained" fullWidth>Upcoming Contests</Button>
-            </Link>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Link to="/community">
-              <Button variant="contained" fullWidth>Community</Button>
-            </Link>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <Link to="/codingstats">
-              <Button variant="contained" fullWidth>Coding Stats</Button>
-            </Link>
-          </Grid>
-        </Grid>
         </Box>
-      </Box>
+      </StyledBox>
     </ProtectedRoute>
   );
 };
