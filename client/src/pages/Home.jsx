@@ -6,6 +6,7 @@ import { Link, Navigate } from "react-router-dom";
 import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 import {quotes} from "../assets/quotes.jsx";
+import Quote from "../components/Quote.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(Context);
@@ -54,44 +55,33 @@ const Home = () => {
       setQuote([quotes[index].text, author]);
   }, [refresh]);
 
-  const Quote = ({ text, author }) => {
-    return (
-      <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px', backgroundColor: '#f0f0f0' }}>
-        <blockquote>
-          <Typography variant="h6" sx={{ fontStyle: 'italic' }}>
-            {text} - {author}
-          </Typography>
-        </blockquote>
-      </Paper>
-    );
-  };
-
-  const handleEdit = () => {
-    setIsEditing(true);
-  };
 
   const handleRating = (editedRating) => {
     setEditedRating(editedRating);
   };
 
   const handleDone = async () => {
-    let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url: `https://codeforces.com/api/user.rating?handle=${editedCodeforces}`,
-      headers: {}
-    };
-
+    let config=null;
     let rating = 0;
-    await axios.request(config)
-      .then((response) => {
-        rating = response.data.result[response.data.result.length - 1].newRating.toString();
-        handleRating(rating);
-      })
-      .catch((error) => {
-        console.log(error);
-        toast.error(error.response.data.comment);
-      });
+    if (editedCodeforces){
+      config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `https://codeforces.com/api/user.rating?handle=${editedCodeforces}`,
+        headers: {}
+      };
+
+      await axios.request(config)
+        .then((response) => {
+          rating = response.data.result[response.data.result.length - 1].newRating.toString();
+          handleRating(rating);
+        })
+        .catch((error) => {
+          console.log(error);
+          toast.error(error.response.data.comment);
+        });
+    }
+
 
     const data = {
       phone: editedPhone,
@@ -138,7 +128,7 @@ const Home = () => {
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#fff',
-    borderRadius: '8px',
+    borderRadius: '0px 0px 8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
   }));
 
@@ -151,11 +141,11 @@ const Home = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          borderRadius: '8px',
+          borderRadius: '0px 0px 8px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
           color: '#fff',
         }}>
-          <Typography variant="h5">Hello, {editedName}</Typography>
+          <Typography variant="h6">Hello, {editedName}</Typography>
           <Quote text={quote[0]} author={quote[1]} />
         </Box>
         <div className="profile">
@@ -167,7 +157,16 @@ const Home = () => {
               <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} fullWidth />
               <TextField name="size" label="Shirt Size" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} fullWidth />
               <TextField name="codeforces" label="Codeforces Id" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} fullWidth />
-              <Button variant="contained" onClick={handleDone} sx={{ marginTop: '20px' }}>Done</Button>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={6}>
+                  <Button variant="contained" fullWidth onClick={()=>setIsEditing(false)}>CANCEL</Button>
+                </Grid>
+                <Grid item xs={12} sm={6} md={6}>
+                  <Button variant="contained" fullWidth onClick={handleDone}>Done</Button>
+                </Grid>
+              </Grid>
+              </Box>
             </ProfileBox>
           ) : (
             <ProfileBox>
@@ -184,7 +183,7 @@ const Home = () => {
                 justifyContent: 'center',
                 marginTop: '20px',
               }}>
-                <Button variant="contained" onClick={handleEdit}>Edit</Button>
+                <Button variant="contained" onClick={()=>setIsEditing(true)}>Edit</Button>
               </Box>
             </ProfileBox>
           )}
