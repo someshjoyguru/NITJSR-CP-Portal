@@ -63,4 +63,4 @@ export const quotes = [
       "text": "Today is the tomorrow we worried about yesterday.",
       "author":  "type.fit"
     }
-]
+];

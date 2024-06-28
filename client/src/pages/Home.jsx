@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
 import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/system";
-import quotes from "../assets/quotes.jsx";
+import {quotes} from "../assets/quotes.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(Context);
