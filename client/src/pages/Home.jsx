@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import { Link, Navigate } from "react-router-dom";
 import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/system";
+import quotes from "../assets/quotes.jsx";
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useContext(Context);
@@ -16,7 +17,7 @@ const ProtectedRoute = ({ children }) => {
 
 const Home = () => {
   const [refresh, setRefresh] = useState(false);
-  const [quotes, setQuotes] = useState([]);
+  const [quote, setQuote] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [editedEmail, setEditedEmail] = useState("");
@@ -47,15 +48,10 @@ const Home = () => {
         toast.error(e.response.data.message);
       });
 
-    axios.get("https://type.fit/api/quotes")
-      .then(function (response) {
-        const data = response.data;
-        const index = Math.floor(Math.random() * data.length);
-        let author = data[index].author;
-        author = author ? author.split(", ")[0] : "Unknown";
-        setQuotes([data[index].text, author]);
-      })
-      .catch(error => console.error("Error fetching quotes:", error));
+      const index = Math.floor(Math.random() * quotes.length);
+      let author = quotes[index].author;
+      author = author ? author.split(", ")[0] : "Unknown";
+      setQuote([quotes[index].text, author]);
   }, [refresh]);
 
   const Quote = ({ text, author }) => {
@@ -160,7 +156,7 @@ const Home = () => {
           color: '#fff',
         }}>
           <Typography variant="h5">Hello, {editedName}</Typography>
-          <Quote text={quotes[0]} author={quotes[1]} />
+          <Quote text={quote[0]} author={quote[1]} />
         </Box>
         <div className="profile">
           {isEditing ? (
