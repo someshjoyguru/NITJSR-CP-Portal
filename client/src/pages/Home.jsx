@@ -132,7 +132,7 @@ const Home = () => {
     gap: '8px',
     flexGrow: 1,
     padding: '30px',
-    width: isMobile ? '90%' : '50%',
+    ...(isMobile ? {} : { width: '50%' }),
     margin: 'auto',
     display: 'flex',
     flexDirection: 'column',
