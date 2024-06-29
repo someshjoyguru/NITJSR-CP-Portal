@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Box, Typography, Paper } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { styled } from '@mui/system';
+import ProtectedRoute from '../utils/ProtectedRoute';
 
 const Container = styled(Box)(({ theme }) => ({
   backgroundColor: '#f5f5f5',
@@ -84,6 +85,7 @@ const Leaderboard = () => {
   }, []);
 
   return (
+    <ProtectedRoute>
     <Container>
       <Header variant="h4">
         Leaderboard
@@ -105,6 +107,7 @@ const Leaderboard = () => {
         </GridBox>
       </GridContainer>
     </Container>
+    </ProtectedRoute>
   );
 };
 

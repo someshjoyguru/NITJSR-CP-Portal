@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Context, server } from '../main';
 import axios from 'axios';
 import { Box } from '@mui/system';
+import ProtectedRoute from '../utils/ProtectedRoute';
 
 import { DataGrid } from '@mui/x-data-grid';
 
@@ -12,6 +13,7 @@ const CodingStats = () => {
 
   return (
     <>
+      <ProtectedRoute>
       <Box>
         <Box sx={{
           marginX: '50px',
@@ -31,6 +33,7 @@ const CodingStats = () => {
           </Box>
         </Box>
       </Box>
+      </ProtectedRoute>
     </>
   )
 

@@ -23,18 +23,9 @@ import {
 } from "@mui/material";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 import { Postcard, OneCard } from "../components/CommunityCards";
-import { Navigate } from "react-router-dom";
 import { Context, server } from "../main";
-import { rulesText } from "../utils/processText";
 import Loader from "../utils/Loader";
-
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useContext(Context);
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-  return children;
-};
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 const Community = () => {
   const [open, setOpen] = useState(false);
