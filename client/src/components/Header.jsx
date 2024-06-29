@@ -9,13 +9,12 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import Avatar from '@mui/material/Avatar';
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 
 const Header = () => {
-  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, user } = useContext(Context);
   const navigate = useNavigate();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -53,6 +52,7 @@ const Header = () => {
               navigate('/login');
             }}>Login</Button>
           )}
+          {user?.image?.url?<Avatar alt="Profile Picture" src={user.image.url} variant="circular" sx={{"width":"30px", "height":"30px", "marginLeft":"10px"}}/>:null}
         </Toolbar>
       </AppBar>
     </Box>

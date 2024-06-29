@@ -1,20 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Context, server } from "../main";
+import { server } from "../main";
 import { toast } from "react-hot-toast";
-import { Link, Navigate } from "react-router-dom";
-import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid, Paper } from "@mui/material";
+import { Link } from "react-router-dom";
+import { Box, Button, TextField, Typography, useMediaQuery, useTheme, Grid, Avatar} from "@mui/material";
 import { styled } from "@mui/system";
 import {quotes} from "../assets/quotes.jsx";
 import Quote from "../components/Quote.jsx";
-
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useContext(Context);
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-  return children;
-};
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 const Home = () => {
   const [refresh, setRefresh] = useState(false);
@@ -27,6 +20,8 @@ const Home = () => {
   const [editedShirtSize, setEditedShirtSize] = useState("");
   const [editedCodeforces, setEditedCodeforces] = useState("");
   const [editedRating, setEditedRating] = useState("0");
+
+  const [imageUri, setImageUri] = useState("");
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -43,6 +38,7 @@ const Home = () => {
         setEditedShirtSize(res.data.user.shirtSize);
         setEditedCodeforces(res.data.user.codeforces);
         setEditedRating(res.data.user.codeforcesRating);
+        setImageUri(res.data.user.image.url);
       })
       .catch((e) => {
         console.error(e);
@@ -56,9 +52,19 @@ const Home = () => {
   }, [refresh]);
 
 
-  const handleRating = (editedRating) => {
-    setEditedRating(editedRating);
-  };
+
+  const [image, setImage] = useState(null);
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setImage(reader.result);
+    }
+    console.log(file);
+  }
+
 
   const handleDone = async () => {
     let config=null;
@@ -74,7 +80,7 @@ const Home = () => {
       await axios.request(config)
         .then((response) => {
           rating = response.data.result[response.data.result.length - 1].newRating.toString();
-          handleRating(rating);
+          setEditedRating(rating);
         })
         .catch((error) => {
           console.log(error);
@@ -82,13 +88,13 @@ const Home = () => {
         });
     }
 
-
     const data = {
       phone: editedPhone,
       registrationNo: editedRegistrationNo,
       shirtSize: editedShirtSize,
       codeforces: editedCodeforces,
       codeforcesRating: rating,
+      image: image
     };
 
     config = {
@@ -106,6 +112,7 @@ const Home = () => {
       .then((response) => {
         setIsEditing(false);
         toast.success("Profile updated successfully");
+        setRefresh(!refresh);
       })
       .catch((error) => {
         console.error(error);
@@ -151,39 +158,52 @@ const Home = () => {
         <div className="profile">
           {isEditing ? (
             <ProfileBox>
-              <TextField name="name" label="Name" value={editedName} onChange={(e) => setEditedName(e.target.value)} disabled fullWidth />
-              <TextField name="email" label="Email" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} disabled fullWidth />
-              <TextField name="phone" label="Phone No." value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} fullWidth />
-              <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} fullWidth />
-              <TextField name="size" label="Shirt Size" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} fullWidth />
-              <TextField name="codeforces" label="Codeforces Id" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} fullWidth />
+
+                  <TextField name="name" label="Name" value={editedName} onChange={(e) => setEditedName(e.target.value)} disabled fullWidth />
+                  <TextField name="email" label="Email" value={editedEmail} onChange={(e) => setEditedEmail(e.target.value)} disabled fullWidth />
+                  <TextField name="phone" label="Phone No." value={editedPhone} onChange={(e) => setEditedPhone(e.target.value)} fullWidth />
+                  <TextField name="regno" label="Registration No." value={editedRegistrationNo} onChange={(e) => setEditedRegistrationNo(e.target.value)} fullWidth />
+                  <TextField name="size" label="Shirt Size" value={editedShirtSize} onChange={(e) => setEditedShirtSize(e.target.value)} fullWidth />
+                  <TextField name="codeforces" label="Codeforces Id" value={editedCodeforces} onChange={(e) => setEditedCodeforces(e.target.value)} fullWidth />
+
+                  {image?<img width={"200px"} alt="Profile Picture" src={image} />:null}
+                  <input type="file" onChange={handleImage} />
+
               <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '10px' }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6} md={6}>
-                  <Button variant="contained" fullWidth onClick={()=>setIsEditing(false)}>CANCEL</Button>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Button variant="contained" fullWidth onClick={() => setIsEditing(false)}>CANCEL</Button>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={6}>
+                    <Button variant="contained" fullWidth onClick={handleDone}>Done</Button>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6} md={6}>
-                  <Button variant="contained" fullWidth onClick={handleDone}>Done</Button>
-                </Grid>
-              </Grid>
               </Box>
             </ProfileBox>
           ) : (
             <ProfileBox>
               <Typography variant="h5" sx={{ alignSelf: 'center', color: '#3f51b5', fontWeight: '600' }}>DASHBOARD</Typography>
-              <Typography variant="h6">Name: {editedName}</Typography>
-              <Typography variant="h6">Email: {editedEmail}</Typography>
-              <Typography variant="h6">Phone: {editedPhone}</Typography>
-              <Typography variant="h6">Registration No.: {editedRegistrationNo}</Typography>
-              <Typography variant="h6">Shirt Size: {editedShirtSize}</Typography>
-              <Typography variant="h6">Codeforces Id: {editedCodeforces}</Typography>
-              <Typography variant="h6">Codeforces Rating: {editedRating}</Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={6} md={6}>
+                  <Typography variant="h6">Name: {editedName}</Typography>
+                  <Typography variant="h6">Email: {editedEmail}</Typography>
+                  <Typography variant="h6">Phone: {editedPhone}</Typography>
+                  <Typography variant="h6">Registration No.: {editedRegistrationNo}</Typography>
+                  <Typography variant="h6">Shirt Size: {editedShirtSize}</Typography>
+                  <Typography variant="h6">Codeforces Id: {editedCodeforces}</Typography>
+                  <Typography variant="h6">Codeforces Rating: {editedRating}</Typography>
+                </Grid>
+                <Grid item alignItems={"center"} xs={12} sm={6} md={6}>
+                  <img width={"200px"} alt="Profile Picture" src={imageUri} />
+                </Grid>
+              </Grid>
+                  
               <Box sx={{
                 display: 'flex',
                 justifyContent: 'center',
                 marginTop: '20px',
               }}>
-                <Button variant="contained" onClick={()=>setIsEditing(true)}>Edit</Button>
+                <Button variant="contained" onClick={() => setIsEditing(true)}>Edit</Button>
               </Box>
             </ProfileBox>
           )}
