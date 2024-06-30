@@ -38,7 +38,7 @@ const Home = () => {
         setEditedShirtSize(res.data.user.shirtSize);
         setEditedCodeforces(res.data.user.codeforces);
         setEditedRating(res.data.user.codeforcesRating);
-        setImageUri(res.data.user.image.url);
+        if (image) setImageUri(res.data.user.image.url);
       })
       .catch((e) => {
         console.error(e);
