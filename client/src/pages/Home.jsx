@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { server } from "../main";
 import { toast } from "react-hot-toast";
@@ -57,16 +57,19 @@ const Home = () => {
 
   const handleImage = (e) => {
     const file = e.target.files[0];
+    if (file.size > 100000) {
+      setError('File size should be less than 100kB');
+      return;
+    }
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
       setImage(reader.result);
     }
-    console.log(file);
   }
 
 
-  const handleDone = async () => {
+  const handleDone = useCallback(async () => {
     let config=null;
     let rating = 0;
     if (editedCodeforces){
@@ -118,7 +121,7 @@ const Home = () => {
         console.error(error);
         toast.error(error.response.data.message);
       });
-  };
+  },[editedPhone, editedRegistrationNo, editedShirtSize, editedCodeforces, editedRating, image, setRefresh]);
 
   const StyledBox = styled(Box)(({ theme }) => ({
     marginX: isMobile ? '20px' : '50px',
@@ -194,7 +197,7 @@ const Home = () => {
                   <Typography variant="h6">Codeforces Rating: {editedRating}</Typography>
                 </Grid>
                 <Grid item alignItems={"center"} xs={12} sm={6} md={6}>
-                  <img width={"200px"} alt="Profile Picture" src={imageUri} />
+                  {imageUri?<img width={"200px"} alt="Profile Picture" src={imageUri} />:null}
                 </Grid>
               </Grid>
                   
