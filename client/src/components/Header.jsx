@@ -52,7 +52,7 @@ const Header = () => {
               navigate('/login');
             }}>Login</Button>
           )}
-          {user?.image?.url?<Avatar alt="Profile Picture" src={user.image.url} variant="circular" sx={{"width":"30px", "height":"30px", "marginLeft":"10px"}}/>:null}
+          {isAuthenticated && user?.image?.url?<Avatar alt="Profile Picture" src={user.image.url} variant="circular" sx={{"width":"30px", "height":"30px", "marginLeft":"10px"}}/>:null}
         </Toolbar>
       </AppBar>
     </Box>
