@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Box } from '@mui/system';
+import { Box, CircularProgress } from '@mui/material'; // Added CircularProgress for loading indicator
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import ProtectedRoute from '../utils/ProtectedRoute';
@@ -14,34 +14,37 @@ const CodingStats = () => {
   const [stats, setStats] = useState(null);
   const [contestHistory, setContestHistory] = useState([]);
   const [problemStats, setProblemStats] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       if (user && user.codeforces) {
-        if (!stats || !contestHistory.length || !problemStats.length) {
-          try {
-            const [statsResponse, contestHistoryResponse, problemStatsResponse] = await Promise.all([
-              axios.get(`https://codeforces.com/api/user.info?handles=${user.codeforces}`),
-              axios.get(`https://codeforces.com/api/user.rating?handle=${user.codeforces}`),
-              axios.get(`https://codeforces.com/api/user.status?handle=${user.codeforces}`)
-            ]);
+        try {
+          const [statsResponse, contestHistoryResponse, problemStatsResponse] = await Promise.all([
+            axios.get(`https://codeforces.com/api/user.info?handles=${user.codeforces}`),
+            axios.get(`https://codeforces.com/api/user.rating?handle=${user.codeforces}`),
+            axios.get(`https://codeforces.com/api/user.status?handle=${user.codeforces}`)
+          ]);
 
-            setStats(statsResponse.data.result[0]);
-            setContestHistory(contestHistoryResponse.data.result);
-            setProblemStats(problemStatsResponse.data.result);
-          } catch (error) {
-            toast.error('Failed to fetch Codeforces data');
-          }
+          setStats(statsResponse.data.result[0]);
+          setContestHistory(contestHistoryResponse.data.result);
+          setProblemStats(problemStatsResponse.data.result);
+          setIsLoading(false); // Set loading to false after fetching data
+        } catch (error) {
+          setError('Failed to fetch Codeforces data');
+          setIsLoading(false); // Set loading to false on error
+          toast.error('Failed to fetch Codeforces data');
         }
       } else {
         setError('Enter your Codeforces handle from the dashboard');
+        setIsLoading(false); // Set loading to false if no user or handle
       }
     };
 
     fetchData();
-  }, [user, stats, contestHistory, problemStats]);
-
+  }, [user]); 
+  
   const columns = [
     { field: 'contestId', headerName: 'Contest ID', width: 150 },
     { field: 'contestName', headerName: 'Contest Name', width: 300 },
@@ -97,66 +100,70 @@ const CodingStats = () => {
           ...(isMobile ? {} : { width: '50%' }),
         }}
       >
-        {error ? (
+        {isLoading ? ( // Display loader while loading
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+            <CircularProgress />
+          </Box>
+        ) : error ? (
           <Box>{error}</Box>
         ) : (
           stats && (
             <Box>
               <Paper elevation={3} sx={{ padding: '20px', marginTop: '20px' }}>
-    <Typography
-      variant="h4"
-      component="h2"
-      align="center"
-      color="primary"
-      gutterBottom
-    >
-      Statistics for: {stats.firstName? (stats.firstName + ' ' + (stats.lastName?stats.lastName:null)): stats.handle}
-    </Typography>
-    <Box>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" component="p">
-            <b>Handle:</b>
-          </Typography>
-          <Typography variant="body1" component="p">
-            {stats.handle}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" component="p">
-            <b>Country:</b>
-          </Typography>
-          <Typography variant="body1" component="p">
-            {stats.country}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" component="p">
-            <b>Current Rating:</b>
-          </Typography>
-          <Typography variant="body1" component="p">
-            {stats.rating}
-          </Typography>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <Typography variant="h6" component="p">
-            <b>Max Rating:</b>
-          </Typography>
-          <Typography variant="body1" component="p">
-            {stats.maxRating} <span>{stats.maxRank}</span>
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="h6" component="p">
-            <b>Current Rank:</b>
-          </Typography>
-          <Typography variant="body1" component="p">
-            {stats.rank}
-          </Typography>
-        </Grid>
-      </Grid>
-    </Box>
-  </Paper>
+                <Typography
+                  variant="h4"
+                  component="h2"
+                  align="center"
+                  color="primary"
+                  gutterBottom
+                >
+                  Statistics for: {stats.firstName ? (stats.firstName + ' ' + (stats.lastName ? stats.lastName : null)) : stats.handle}
+                </Typography>
+                <Box>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="h6" component="p">
+                        <b>Handle:</b>
+                      </Typography>
+                      <Typography variant="body1" component="p">
+                        {stats.handle}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="h6" component="p">
+                        <b>Country:</b>
+                      </Typography>
+                      <Typography variant="body1" component="p">
+                        {stats.country}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="h6" component="p">
+                        <b>Current Rating:</b>
+                      </Typography>
+                      <Typography variant="body1" component="p">
+                        {stats.rating}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="h6" component="p">
+                        <b>Max Rating:</b>
+                      </Typography>
+                      <Typography variant="body1" component="p">
+                        {stats.maxRating} <span>{stats.maxRank}</span>
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Typography variant="h6" component="p">
+                        <b>Current Rank:</b>
+                      </Typography>
+                      <Typography variant="body1" component="p">
+                        {stats.rank}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Paper>
               {contestHistory.length > 0 && (
                 <Box mt={4}>
                   <h3>Contest History</h3>
