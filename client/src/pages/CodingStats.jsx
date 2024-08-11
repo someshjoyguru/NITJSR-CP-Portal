@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Box, CircularProgress } from '@mui/material'; // Added CircularProgress for loading indicator
+import { Box, CircularProgress } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import axios from 'axios';
 import ProtectedRoute from '../utils/ProtectedRoute';
@@ -30,15 +30,15 @@ const CodingStats = () => {
           setStats(statsResponse.data.result[0]);
           setContestHistory(contestHistoryResponse.data.result);
           setProblemStats(problemStatsResponse.data.result);
-          setIsLoading(false); // Set loading to false after fetching data
+          setIsLoading(false); 
         } catch (error) {
           setError('Failed to fetch Codeforces data');
-          setIsLoading(false); // Set loading to false on error
+          setIsLoading(false); 
           toast.error('Failed to fetch Codeforces data');
         }
       } else {
         setError('Enter your Codeforces handle from the dashboard');
-        setIsLoading(false); // Set loading to false if no user or handle
+        setIsLoading(false);
       }
     };
 
@@ -100,7 +100,7 @@ const CodingStats = () => {
           ...(isMobile ? {} : { width: '50%' }),
         }}
       >
-        {isLoading ? ( // Display loader while loading
+        {isLoading ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
             <CircularProgress />
           </Box>
